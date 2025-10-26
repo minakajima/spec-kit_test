@@ -1,0 +1,19 @@
+{
+  "name": "shooter_game",
+  "version": "1.0.0",
+  "description": "Browser-based shooter game with Phoenix LiveView",
+  "repository": {},
+  "license": "MIT",
+  "scripts": {
+    "deploy": "NODE_ENV=production webpack --mode production",
+    "watch": "webpack --mode development --watch"
+  },
+  "dependencies": {
+    "phoenix": "file:../deps/phoenix",
+    "phoenix_html": "file:../deps/phoenix_html",
+    "phoenix_live_view": "file:../deps/phoenix_live_view"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.11"
+  }
+}

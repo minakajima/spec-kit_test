@@ -1,50 +1,107 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 → 1.1.0
+- Modified principles: 全原則を日本語に翻訳、開発プロセスの詳細化
+- Added sections: 日本語による詳細な説明を追加
+- Removed sections: N/A
+- Templates requiring updates:
+  ✅ plan-template.md (Constitution Check section compatible)
+  ✅ spec-template.md (User scenarios structure compatible)
+  ✅ tasks-template.md (no specific updates needed)
+- Follow-up TODOs: None
+-->
 
-## Core Principles
+# Phoenix スクロールシューター プロジェクト憲法
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+## 核心原則
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### I. リアルタイム最優先
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+全ゲームメカニクスは Phoenix LiveView の pub/sub 機能を使用してリアルタイムで動作しなければならない。
+ゲーム状態の更新は 60fps ゲームプレイのため 16ms 以内に全接続クライアントに配信されなければならない。
+クライアント側状態同期は禁止 - サーバーが全ゲームエンティティの唯一の信頼できる情報源である。
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**根拠**: 一貫したマルチプレイヤー体験を保証し、クライアント側操作による不正行為を防ぐため。
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. 関数型ゲームロジック（非交渉事項）
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+ゲーム状態遷移は現在状態と入力を受け取り新状態を返す純粋関数でなければならない。
+全ゲームエンティティ（プレイヤー、敵、弾丸）はイミュータブルなデータ構造でなければならない。
+副作用（レンダリング、音声、ネットワーク）はコアゲームロジックから分離されなければならない。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+**根拠**: 予測可能な動作、簡単なテスト、タイムトラベルデバッグ機能を可能にするため。
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### III. LiveView ファーストアーキテクチャ
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+ゲームレンダリングは Phoenix LiveView と JavaScript Hooks を使用したクライアント側 Canvas 操作を使用しなければならない。
+サーバーは全ゲームロジックを処理し、クライアントは入力キャプチャとレンダリングのみを処理する。
+全ユーザーインタラクションは LiveView イベント処理を経由しなければならない。
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+**根拠**: ロジックとプレゼンテーションの関心の分離を維持しながら LiveView の強みを活用するため。
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+### IV. パフォーマンス駆動開発
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+ゲームループは 60fps を維持し、サーバー応答時間は 16ms 未満でなければならない。
+クライアントセッションあたりのメモリ使用量は 100MB 以下を維持しなければならない。
+全パフォーマンス重要コードパスにはベンチマークを含めなければならない。
+
+**根拠**: シューティングゲームは魅力的なゲームプレイのため応答性の高いコントロールと滑らかなアニメーションが必要。
+
+### V. テスト駆動ゲーム開発
+
+ゲームロジックは ExUnit と Phoenix.LiveViewTest を使用した TDD で開発されなければならない。
+全ゲーム状態遷移には対応するユニットテストがなければならない。
+統合テストはリアルタイム動作と WebSocket 通信を検証しなければならない。
+
+**根拠**: リアルタイム制約のある複雑なゲームロジックは回帰を防ぐため包括的テストが必要。
+
+## 技術標準
+
+### 技術スタック
+
+**言語**: Elixir（mise による最新安定版）
+**フレームワーク**: Phoenix LiveView with PubSub
+**フロントエンド**: HTML5 Canvas with JavaScript Hooks
+**ストレージ**: ブラウザ LocalStorage のみ（データベース不要）
+**テスト**: ExUnit, Phoenix.LiveViewTest
+**ビルド**: JavaScript バンドリングのための esbuild を含む Mix
+
+### コード構成
+
+ゲームロジックは明確なモジュールに分離されなければならない:
+- ゲーム状態管理（純粋関数）
+- LiveView コントローラー（イベント処理）
+- Canvas レンダリング（JavaScript Hooks）
+- 入力処理（マウス/キーボードキャプチャ）
+
+## 開発ワークフロー
+
+### 機能開発プロセス
+
+1. 包括的テストを含む純粋関数としてゲームメカニクスを定義
+2. 適切なイベント処理で LiveView 統合を実装
+3. JavaScript Hooks で Canvas レンダリングを追加
+4. 現実的なゲームシナリオでパフォーマンステスト
+5. 該当する場合は複数クライアントで統合テスト
+
+### 品質ゲート
+
+全機能は以下を通過しなければならない:
+- ゲームロジックのユニットテスト（100% カバレッジ必須）
+- パフォーマンスベンチマーク（60fps 維持）
+- LiveView 統合テスト
+- 手動ゲームプレイテスト
+
+## ガバナンス
+
+この憲法は Phoenix スクロールシューター プロジェクトの他の全開発プラクティスより優先される。
+全プルリクエストはこれらの原則への準拠を証明しなければならない。
+パフォーマンス回帰や機能複雑性の追加は明確なビジネス価値で正当化されなければならない。
+
+憲法改正には以下が必要:
+1. 根拠を含む提案変更の文書化
+2. 既存コードベースへの影響分析
+3. 破壊的変更が含まれる場合の移行計画
+4. 必要性と実装アプローチに関するチーム合意
+
+**バージョン**: 1.1.0 | **批准日**: 2025-10-26 | **最終修正日**: 2025-10-26

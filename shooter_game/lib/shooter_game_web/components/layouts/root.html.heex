@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Phoenix Shooter">
+      <%= assigns[:page_title] || "Shooter Game" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/storage_manager.js"}>
+    </script>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/data_sync.js"}>
+    </script>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+  </head>
+  <body class="bg-gray-900 text-white antialiased min-h-screen">
+    <header class="px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between border-b border-gray-700 py-3 text-sm">
+        <div class="flex items-center gap-4">
+          <a href="/">
+            <h1 class="text-xl font-bold text-white">Phoenix Shooter</h1>
+          </a>
+        </div>
+        <div class="flex items-center gap-4 font-semibold leading-6 text-gray-300">
+          <a href="/game" class="hover:text-white transition-colors">
+            Play Game
+          </a>
+          <a href="/stats" class="hover:text-white transition-colors">
+            Statistics
+          </a>
+          <a
+            href="https://github.com/phoenixframework/phoenix"
+            class="rounded-lg bg-gray-800 px-2 py-1 hover:bg-gray-700 transition-colors"
+            target="_blank"
+          >
+            Phoenix <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <div class="mx-auto flex justify-center">
+        <.flash_group flash={@flash} />
+        <%= @inner_content %>
+      </div>
+    </main>
+  </body>
+</html>

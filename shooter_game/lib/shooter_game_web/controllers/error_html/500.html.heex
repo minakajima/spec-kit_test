@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Server Error - Phoenix Shooter</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #7c2d12, #dc2626);
+        color: white;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .container {
+        max-width: 500px;
+        padding: 2rem;
+      }
+      h1 {
+        font-size: 8rem;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+      h2 {
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
+      p {
+        font-size: 1.2rem;
+        margin: 1rem 0;
+        opacity: 0.9;
+      }
+      a {
+        color: #fbbf24;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .game-link {
+        display: inline-block;
+        margin-top: 2rem;
+        padding: 1rem 2rem;
+        background: #1e40af;
+        border-radius: 8px;
+        transition: background 0.3s;
+      }
+      .game-link:hover {
+        background: #1e3a8a;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>500</h1>
+      <h2>Internal Server Error</h2>
+      <p>Something went wrong on our end. We're working to fix it!</p>
+      <p>Try refreshing the page, or go back to the <a href="/game">game</a>.</p>
+      <a href="/game" class="game-link">Play Game</a>
+    </div>
+  </body>
+</html>
